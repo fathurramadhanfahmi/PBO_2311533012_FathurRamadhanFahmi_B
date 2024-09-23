@@ -29,6 +29,9 @@ public class MainFrame extends JFrame {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				UserFrame frame = new UserFrame();
+				frame.setVisible(true);
+				frame.loadTable();
 			}
 		});
 	}
