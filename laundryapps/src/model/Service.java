@@ -2,7 +2,8 @@ package model;
 
 public class Service {
 	
-	String id, jenis, harga, status;
+	String id, jenis, status;
+	int harga;
 
 	public String getId() {
 		return id;
@@ -20,11 +21,11 @@ public class Service {
 		this.jenis = jenis;
 	}
 
-	public String getHarga() {
+	public int getHarga() {
 		return harga;
 	}
 
-	public void setHarga(String harga) {
+	public void setHarga(int harga) {
 		this.harga = harga;
 	}
 
