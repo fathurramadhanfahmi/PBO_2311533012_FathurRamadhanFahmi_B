@@ -1,9 +1,7 @@
 package model;
 
 public class Order {
-
-	String id, id_customer, id_service, id_user, total, tanggal,tanggal_selesai,
-	status, status_pembayaran;
+	String id, nama_costumer, pembayaran, total, tanggal, tanggal_peng, status, status_pembayaran;
 
 	public String getId() {
 		return id;
@@ -12,30 +10,23 @@ public class Order {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getId_customer() {
-		return id_customer;
+	
+	public String getpembayaran() {
+		return pembayaran;
 	}
 
-	public void setId_customer(String id_customer) {
-		this.id_customer = id_customer;
+	public void setpembayaran(String pembayaran) {
+		this.pembayaran = pembayaran;
 	}
 
-	public String getId_service() {
-		return id_service;
+	public String getNama_costumer() {
+		return nama_costumer;
 	}
 
-	public void setId_service(String id_service) {
-		this.id_service = id_service;
+	public void setNama_costumer(String nama_costumer) {
+		this.nama_costumer = nama_costumer;
 	}
 
-	public String getId_user() {
-		return id_user;
-	}
-
-	public void setId_user(String id_user) {
-		this.id_user = id_user;
-	}
 
 	public String getTotal() {
 		return total;
@@ -50,15 +41,15 @@ public class Order {
 	}
 
 	public void setTanggal(String tanggal) {
-		this.tanggal = tanggal;
+		this.tanggal = tanggal.toString();
 	}
 
 	public String getTanggal_selesai() {
-		return tanggal_selesai;
+		return tanggal_peng;
 	}
 
 	public void setTanggal_selesai(String tanggal_selesai) {
-		this.tanggal_selesai = tanggal_selesai;
+		this.tanggal_peng = tanggal_selesai.toString();
 	}
 
 	public String getStatus() {
@@ -76,6 +67,5 @@ public class Order {
 	public void setStatus_pembayaran(String status_pembayaran) {
 		this.status_pembayaran = status_pembayaran;
 	}
-	
 	
 }

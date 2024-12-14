@@ -1,26 +1,30 @@
 package ui;
 
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import DAO.CustomerRepo;
 import DAO.ServiceRepo;
 import DAO.UserRepo;
+import model.Costumer;
 import model.Service;
 import model.User;
 import table.TableService;
 import table.TableUser;
 
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.util.List;
+
 import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.JTable;
-import javax.swing.JScrollPane;
+import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -31,8 +35,8 @@ public class ServiceFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtJenis;
-	private JTextField txtStatus;
 	private JTextField txtHarga;
+	private JTextField txtStatus;
 	private JTable tableService;
 
 	/**
@@ -51,152 +55,132 @@ public class ServiceFrame extends JFrame {
 			}
 		});
 	}
-	public void reset() {
-		txtJenis.setText("");
-		txtStatus.setText("");
-		txtHarga.setText("");
-	}
 
-	ServiceRepo srv = new ServiceRepo();
-	List<Service> ls;
-	public String id;
-	
-	public void loadTable() {
-		ls = srv.show();
-		TableService ts = new TableService(ls);
-		tableService.setModel(ts);
-		tableService.getTableHeader().setVisible(true);
-	}
-	
+	/**
+	 * Create the frame.
+	 */
 	public ServiceFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 724, 484);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 10, 766, 260);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		JLabel lblNewLabel = new JLabel("Jenis");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel.setBounds(31, 32, 51, 22);
+		contentPane.add(lblNewLabel);
 		
-		JLabel lblJenis = new JLabel("Jenis");
-		lblJenis.setFont(new Font("HP Simplified Jpan Light", Font.PLAIN, 16));
-		lblJenis.setBounds(70, 25, 45, 25);
-		panel.add(lblJenis);
+		JLabel lblAlamat = new JLabel("Harga");
+		lblAlamat.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblAlamat.setBounds(31, 68, 51, 22);
+		contentPane.add(lblAlamat);
+		
+		JLabel lblNohp = new JLabel("Status");
+		lblNohp.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNohp.setBounds(31, 109, 51, 22);
+		contentPane.add(lblNohp);
 		
 		txtJenis = new JTextField();
-		txtJenis.setBounds(165, 31, 505, 19);
-		panel.add(txtJenis);
+		txtJenis.setBounds(92, 35, 431, 20);
+		contentPane.add(txtJenis);
 		txtJenis.setColumns(10);
-		
-		JLabel lblStatus = new JLabel("Status");
-		lblStatus.setFont(new Font("HP Simplified Jpan Light", Font.PLAIN, 16));
-		lblStatus.setBounds(70, 75, 76, 25);
-		panel.add(lblStatus);
-		
-		txtStatus = new JTextField();
-		txtStatus.setColumns(10);
-		txtStatus.setBounds(165, 81, 505, 19);
-		panel.add(txtStatus);
-		
-		JLabel lblHarga = new JLabel("Harga");
-		lblHarga.setFont(new Font("HP Simplified Jpan Light", Font.PLAIN, 16));
-		lblHarga.setBounds(70, 122, 76, 25);
-		panel.add(lblHarga);
 		
 		txtHarga = new JTextField();
 		txtHarga.setColumns(10);
-		txtHarga.setBounds(165, 128, 505, 19);
-		panel.add(txtHarga);
+		txtHarga.setBounds(92, 71, 431, 20);
+		contentPane.add(txtHarga);
+		
+		txtStatus = new JTextField();
+		txtStatus.setColumns(10);
+		txtStatus.setBounds(92, 112, 431, 20);
+		contentPane.add(txtStatus);
+		
+		tableService = new JTable();
+		tableService.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+                id = tableService.getValueAt(tableService.getSelectedRow(), 0).toString();
+                txtJenis.setText(tableService.getValueAt(tableService.getSelectedRow(), 1).toString());
+                Double harga = (Double) tableService.getValueAt(tableService.getSelectedRow(), 2);
+                txtHarga.setText(String.valueOf(harga.intValue()));
+                txtStatus.setText(tableService.getValueAt(tableService.getSelectedRow(), 3).toString());
+            }
+		});
+		tableService.setBounds(10, 194, 688, 181);
+		contentPane.add(tableService);
 		
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Service service = new Service();
 				service.setJenis(txtJenis.getText());
-				service.setStatus(txtStatus.getText());
-				service.setHarga(Integer.parseInt(txtHarga.getText()));
-				srv.save(service);
-				reset();
-				loadTable();
+				service.setHarga(txtHarga.getText());
+                service.setStatus(txtStatus.getText());
+                srvc.save(service);
+                reset();
+                loadTable();
 			}
 		});
-		btnSave.setFont(new Font("HP Simplified Jpan Light", Font.PLAIN, 16));
-		btnSave.setBounds(165, 193, 85, 40);
-		panel.add(btnSave);
+		btnSave.setBounds(54, 160, 89, 23);
+		contentPane.add(btnSave);
 		
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(id != null) {
-					Service service = new Service();
-					service.setJenis(txtJenis.getText());
-					service.setStatus(txtStatus.getText());
-					service.setHarga(Integer.parseInt(txtHarga.getText()));
-					service.setId(id);
-					srv.update(service);
-					reset();
-					loadTable();
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Silahkan pilih data yang akan dihapus");
-				}
-			}
+				Service service = new Service();
+				service.setId(id);
+				service.setJenis(txtJenis.getText());
+				service.setHarga(txtHarga.getText());
+                service.setStatus(txtStatus.getText());
+                srvc.update(service);
+                reset();
+                loadTable();
+        	}
 		});
-		btnUpdate.setFont(new Font("HP Simplified Jpan Light", Font.PLAIN, 16));
-		btnUpdate.setBounds(271, 193, 85, 40);
-		panel.add(btnUpdate);
+		btnUpdate.setBounds(153, 160, 89, 23);
+		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(id != null) {
-					srv.delete(id);
-					reset();
-					loadTable();
-				}else {
-					JOptionPane.showMessageDialog(null, "Silahkan pilih data yang akan dihapus");
-				}
-			}
+        		if(id != null) {
+        			srvc.delete(id);
+        			reset();
+        			loadTable();
+        		}else {
+        			JOptionPane.showMessageDialog(null, "Silahkan Pilih Data yang Akan di Hapus");
+        		}
+        	}
 		});
-		btnDelete.setFont(new Font("HP Simplified Jpan Light", Font.PLAIN, 16));
-		btnDelete.setBounds(383, 193, 85, 40);
-		panel.add(btnDelete);
+		btnDelete.setBounds(375, 160, 89, 23);
+		contentPane.add(btnDelete);
 		
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MainFrame main = new MainFrame();
-				main.setVisible(true);
-				dispose();
-			}
-		});
-		btnCancel.setFont(new Font("HP Simplified Jpan Light", Font.PLAIN, 16));
-		btnCancel.setBounds(585, 193, 85, 40);
-		panel.add(btnCancel);
+		btnCancel.setBounds(474, 160, 89, 23);
+		contentPane.add(btnCancel);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 280, 766, 273);
-		contentPane.add(scrollPane);
-		
-		tableService = new JTable();
-		tableService.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				id = tableService.getValueAt(tableService.getSelectedRow(), 0).toString();
-				txtJenis.setText(tableService.getValueAt(tableService.getSelectedRow(), 1).toString());
-				txtStatus.setText(tableService.getValueAt(tableService.getSelectedRow(), 2).toString());
-				txtHarga.setText(tableService.getValueAt(tableService.getSelectedRow(), 3).toString());
-			}
-		});
-		scrollPane.setViewportView(tableService);
-		
-		
-		
-		
-		
+		JScrollPane scrollPane = new JScrollPane(tableService);
+        scrollPane.setBounds(10, 206, 674, 249);
+        contentPane.add(scrollPane);
 	}
+	
+	public void reset() {
+        txtJenis.setText("");
+        txtHarga.setText("");
+        txtStatus.setText("");
+    }
+
+    ServiceRepo srvc = new ServiceRepo();
+    List<Service> ls;
+    public String id;
+
+    public void loadTable() {
+        ls = srvc.show();
+        TableService tu = new TableService(ls);
+        tableService.setModel(tu);
+        tableService.getTableHeader().setVisible(true);
+    }
 }

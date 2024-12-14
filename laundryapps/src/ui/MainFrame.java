@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
@@ -29,9 +30,6 @@ public class MainFrame extends JFrame {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				UserFrame frame = new UserFrame();
-				frame.setVisible(true);
-				frame.loadTable();
 			}
 		});
 	}
@@ -41,7 +39,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 559, 394);
+		setBounds(100, 100, 509, 366);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -49,49 +47,41 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Laundry Apps");
-		lblNewLabel.setForeground(new Color(0, 0, 255));
-		lblNewLabel.setFont(new Font("Sylfaen", Font.BOLD, 21));
-		lblNewLabel.setBounds(31, 20, 166, 37);
+		lblNewLabel.setForeground(new Color(128, 128, 128));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel.setBounds(174, 11, 140, 46);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("Pesanan");
-		btnNewButton.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		btnNewButton.setBounds(40, 91, 123, 57);
-		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Layanan");
-		btnNewButton_1.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		btnNewButton_1.setBounds(216, 94, 135, 57);
-		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("Pelanggan");
-		btnNewButton_2.addActionListener(new ActionListener() {
+		JButton btnNewButton = new JButton("PESANAN");
+		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_2.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		btnNewButton_2.setBounds(389, 91, 123, 57);
-		contentPane.add(btnNewButton_2);
+		btnNewButton.setBounds(23, 69, 140, 46);
+		contentPane.add(btnNewButton);
 		
-		JButton btnNewButton_3 = new JButton("Pengguna");
-		btnNewButton_3.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		btnNewButton_3.setBounds(40, 189, 123, 53);
-		contentPane.add(btnNewButton_3);
+		JButton btnLayanan = new JButton("LAYANAN");
+		btnLayanan.setBounds(174, 68, 140, 46);
+		contentPane.add(btnLayanan);
 		
-		JButton btnNewButton_4 = new JButton("Laporan");
-		btnNewButton_4.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		btnNewButton_4.setBounds(216, 185, 135, 57);
-		contentPane.add(btnNewButton_4);
+		JButton btnPelanggan = new JButton("PELANGGAN");
+		btnPelanggan.setBounds(326, 69, 140, 46);
+		contentPane.add(btnPelanggan);
 		
-		JButton btnNewButton_5 = new JButton("Profile");
-		btnNewButton_5.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		btnNewButton_5.setBounds(389, 187, 123, 57);
-		contentPane.add(btnNewButton_5);
+		JButton btnPengguna = new JButton("PENGGUNA");
+		btnPengguna.setBounds(23, 144, 140, 46);
+		contentPane.add(btnPengguna);
 		
-		JButton btnNewButton_6 = new JButton("Keluar");
-		btnNewButton_6.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		btnNewButton_6.setBounds(40, 276, 470, 37);
-		contentPane.add(btnNewButton_6);
+		JButton btnLaporan = new JButton("LAPORAN");
+		btnLaporan.setBounds(174, 144, 140, 46);
+		contentPane.add(btnLaporan);
+		
+		JButton btnProfile = new JButton("PROFILE");
+		btnProfile.setBounds(326, 144, 140, 46);
+		contentPane.add(btnProfile);
+		
+		JButton btnKeluar = new JButton("KELUAR");
+		btnKeluar.setBounds(23, 227, 443, 46);
+		contentPane.add(btnKeluar);
 	}
-
 }
