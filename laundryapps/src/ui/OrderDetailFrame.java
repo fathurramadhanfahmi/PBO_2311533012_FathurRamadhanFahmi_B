@@ -16,7 +16,7 @@ import DAO.CustomerRepo;
 import DAO.OrderDetailRepo;
 import DAO.OrderRepo;
 import DAO.ServiceRepo;
-import model.Costumer;
+import model.Customer;
 import model.Order;
 import model.OrderDetail;
 import model.Service;
@@ -410,7 +410,7 @@ public class OrderDetailFrame extends JFrame {
         txtPelanggan.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	CustomerFrame customerFrame = new CustomerFrame(OrderDetailFrame.this);
+            	CustomerFrame customerFrame = new CustomerFrame();
                 customerFrame.setVisible(true);
                 customerFrame.loadTable();
                 
@@ -446,7 +446,7 @@ public class OrderDetailFrame extends JFrame {
     }
     
     CustomerRepo cstmr = new CustomerRepo();
-    List<Costumer> ls2;
+    List<Customer> ls2;
     public String id2;
     private JTable tableCustomer;
 

@@ -1,197 +1,204 @@
 package ui;
 
 import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import DAO.CustomerRepo;
-import model.Costumer;
+import model.Customer;
+import model.CustomerBuilder;
 import table.TableCustomer;
 
+import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import java.awt.Font;
-import java.util.List;
 import javax.swing.JTextField;
-import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.*;
 import java.awt.event.ActionEvent;
+import javax.swing.JTable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
+import java.awt.Font;
 
 public class CustomerFrame extends JFrame {
-    private OrderDetailFrame orderDetailFrame;
 
-    private static final long serialVersionUID = 1L;
-    private JPanel contentPane;
-    private JTextField txtNama;
-    private JTextField txtAlamat;
-    private JTextField txtNohp;
-    private JTable tableCostumer;
-    public String id; // Untuk menyimpan ID pelanggan yang terpilih
-    private CustomerRepo cstmr = new CustomerRepo(); // Inisialisasi repositori pelanggan
-    private List<Costumer> ls; // List untuk menyimpan data pelanggan
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField txtName;
+	private JTextField txtAddress;
+	private JTextField txtPhone;
+	private JTable tableCustomer;
+	
+	public void reset() {
+		txtName.setText("");
+		txtAddress.setText("");
+		txtPhone.setText("");
+	}
+	
+	CustomerRepo cusr = new CustomerRepo();
+	List<Customer> ls;
+	public String id;
+	
+	public void loadTable() {
+		ls = cusr.show();
+		TableCustomer tc = new TableCustomer(ls);
+		tableCustomer.setModel(tc);
+		tableCustomer.getTableHeader().setVisible(true);
+	}
 
-    public CustomerFrame(OrderDetailFrame orderDetailFrame) {
-        this.orderDetailFrame = orderDetailFrame;
-        initialize(); // Panggil metode untuk menginisialisasi GUI
-        loadTable(); // Muat data pelanggan ke dalam tabel setelah inisialisasi
-    }
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CustomerFrame frame = new CustomerFrame();
+					frame.setVisible(true);
+					frame.loadTable();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    CustomerFrame frame = new CustomerFrame(new OrderDetailFrame());
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+	/**
+	 * Create the frame.
+	 */
+	public CustomerFrame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 457, 618);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-    private void initialize() {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 724, 484);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
-
-        JLabel lblNewLabel = new JLabel("Nama");
-        lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblNewLabel.setBounds(31, 32, 51, 22);
-        contentPane.add(lblNewLabel);
-
-        JLabel lblAlamat = new JLabel("Alamat");
-        lblAlamat.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblAlamat.setBounds(31, 68, 51, 22);
-        contentPane.add(lblAlamat);
-
-        JLabel lblNohp = new JLabel("NoHp");
-        lblNohp.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblNohp.setBounds(31, 109, 51, 22);
-        contentPane.add(lblNohp);
-
-        txtNama = new JTextField();
-        txtNama.setBounds(92, 35, 431, 20);
-        contentPane.add(txtNama);
-        txtNama.setColumns(10);
-
-        txtAlamat = new JTextField();
-        txtAlamat.setColumns(10);
-        txtAlamat.setBounds(92, 71, 431, 20);
-        contentPane.add(txtAlamat);
-
-        txtNohp = new JTextField();
-        txtNohp.setColumns(10);
-        txtNohp.setBounds(92, 112, 431, 20);
-        contentPane.add(txtNohp);
-
-        // Inisialisasi tableCostumer
-        tableCostumer = new JTable();
-        tableCostumer.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int selectedRow = tableCostumer.getSelectedRow();
-                if (selectedRow != -1) {
-                    id = tableCostumer.getValueAt(selectedRow, 0).toString();
-                    txtNama.setText(tableCostumer.getValueAt(selectedRow, 1).toString());
-                    txtAlamat.setText(tableCostumer.getValueAt(selectedRow, 2).toString());
-                    txtNohp.setText(tableCostumer.getValueAt(selectedRow, 3).toString());
-                }
-            }
-        });
-
-        JScrollPane scrollPane = new JScrollPane(tableCostumer);
-        scrollPane.setBounds(10, 194, 688, 228);
-        contentPane.add(scrollPane);
-
-        JButton btnSave = new JButton("Save");
-        btnSave.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Costumer costumer = new Costumer();
-                costumer.setNama(txtNama.getText());
-                costumer.setAlamat(txtAlamat.getText());
-                costumer.setNohp(txtNohp.getText());
-                cstmr.save(costumer);
-                reset();
-                loadTable();
-            }
-        });
-        btnSave.setBounds(54, 160, 89, 23);
-        contentPane.add(btnSave);
-
-        JButton btnUpdate = new JButton("Update");
-        btnUpdate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Costumer costumer = new Costumer();
-                costumer.setId(id);
-                costumer.setNama(txtNama.getText());
-                costumer.setAlamat(txtAlamat.getText());
-                costumer.setNohp(txtNohp.getText());
-                cstmr.update(costumer);
-                reset();
-                loadTable();
-            }
-        });
-        btnUpdate.setBounds(153, 160, 89, 23);
-        contentPane.add(btnUpdate);
-
-        JButton btnDelete = new JButton("Delete");
-        btnDelete.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (id != null) {
-                    cstmr.delete(id);
-                    reset();
-                    loadTable();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Silahkan Pilih Data yang Akan di Hapus");
-                }
-            }
-        });
-        btnDelete.setBounds(375, 160, 89, 23);
-        contentPane.add(btnDelete);
-
-        JButton btnCancel = new JButton("Cancel");
-        btnCancel.setBounds(474, 160, 89, 23);
-        contentPane.add(btnCancel);
-
-        JButton btnAdd = new JButton("Add");
-        btnAdd.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addSelectedCustomer();
-            }
-        });
-        btnAdd.setBounds(258, 161, 89, 23);
-        contentPane.add(btnAdd);
-    }
-
-    public void reset() {
-        txtNama.setText("");
-        txtAlamat.setText("");
-        txtNohp.setText("");
-    }
-
-    public void loadTable() {
-        ls = cstmr.show();
-        TableCustomer tu = new TableCustomer(ls);
-        tableCostumer.setModel(tu);
-        tableCostumer.getTableHeader().setVisible(true);
-    }
-
-    private void addSelectedCustomer() {
-        int selectedRow = tableCostumer.getSelectedRow(); // Pastikan menggunakan tableCostumer
-        if (selectedRow != -1) {
-            Costumer selectedCustomer = ls.get(selectedRow);
-            orderDetailFrame.getTxtPelanggan().setText(selectedCustomer.getNama());
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Silakan pilih pelanggan terlebih dahulu.");
-        }
-    }
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(192, 192, 192));
+		panel.setBounds(10, 11, 423, 265);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblName = new JLabel("Name");
+		lblName.setBounds(31, 45, 56, 20);
+		panel.add(lblName);
+		
+		JLabel lblAddress = new JLabel("Address");
+		lblAddress.setBounds(31, 88, 63, 20);
+		panel.add(lblAddress);
+		
+		JLabel lblPhone = new JLabel("Phone");
+		lblPhone.setBounds(31, 132, 63, 20);
+		panel.add(lblPhone);
+		
+		txtName = new JTextField();
+		txtName.setBounds(97, 41, 244, 28);
+		panel.add(txtName);
+		txtName.setColumns(10);
+		
+		txtAddress = new JTextField();
+		txtAddress.setColumns(10);
+		txtAddress.setBounds(97, 84, 244, 28);
+		panel.add(txtAddress);
+		
+		txtPhone = new JTextField();
+		txtPhone.setColumns(10);
+		txtPhone.setBounds(97, 128, 244, 28);
+		panel.add(txtPhone);
+		
+		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Customer customer = new CustomerBuilder()
+				.setNama(txtName.getText())
+				.setAlamat(txtAddress.getText())
+				.setHp(txtPhone.getText())
+				.build();
+				cusr.save(customer);
+				reset();
+				loadTable();
+			}
+		});
+		btnSave.setBounds(43, 182, 63, 23);
+		panel.add(btnSave);
+		
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Customer customer = new CustomerBuilder()
+				.setNama(txtName.getText())
+				.setAlamat(txtAddress.getText())
+				.setHp(txtPhone.getText())
+				.setId(id)
+				.build();
+				cusr.update(customer);
+				reset();
+				loadTable();
+				
+			}
+		});
+		btnUpdate.setBounds(114, 182, 84, 23);
+		panel.add(btnUpdate);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(id != null) {
+					cusr.delete(id);
+					reset();
+					loadTable();
+				} else {
+					JOptionPane.showMessageDialog(null, 
+							"SIlahkan pilih data yang akan dihapus");
+				}
+			}
+		});
+		btnDelete.setBounds(208, 182, 84, 23);
+		panel.add(btnDelete);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainFrame mainf = new MainFrame();
+				mainf.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancel.setBounds(302, 182, 84, 23);
+		panel.add(btnCancel);
+		
+		JLabel lblCustomer = new JLabel("Customer");
+		lblCustomer.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblCustomer.setBounds(10, 11, 96, 23);
+		panel.add(lblCustomer);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setLayout(null);
+		panel_1.setBackground(Color.LIGHT_GRAY);
+		panel_1.setBounds(10, 287, 423, 265);
+		contentPane.add(panel_1);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 403, 243);
+		panel_1.add(scrollPane);
+		
+		tableCustomer = new JTable();
+		scrollPane.setViewportView(tableCustomer);
+		tableCustomer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				id = tableCustomer.getValueAt(tableCustomer.getSelectedRow(),0).toString();
+				txtName.setText(tableCustomer.getValueAt(tableCustomer.getSelectedRow(),1).toString());
+				txtAddress.setText(tableCustomer.getValueAt(tableCustomer.getSelectedRow(),2).toString());
+				txtPhone.setText(tableCustomer.getValueAt(tableCustomer.getSelectedRow(),3).toString());
+			}
+		});
+	}
 }

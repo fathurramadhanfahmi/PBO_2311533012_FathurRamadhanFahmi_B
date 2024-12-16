@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import DAO.CustomerRepo;
 import DAO.ServiceRepo;
 import DAO.UserRepo;
-import model.Costumer;
+import model.Customer;
 import model.Service;
 import model.User;
 import table.TableService;

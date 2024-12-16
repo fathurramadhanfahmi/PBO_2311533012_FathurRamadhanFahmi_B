@@ -2,7 +2,6 @@ package config;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
-import java.sql.DriverManager;
 
 public class Database {
 	Connection conn;
@@ -16,6 +15,10 @@ public class Database {
 			JOptionPane.showMessageDialog(null, e);
 			return null;
 		}
+	}
+	public static Statement getInstance() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
